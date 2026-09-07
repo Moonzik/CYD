@@ -1,0 +1,240 @@
+:root {
+  /* 蒂芙尼蓝 + 白 主题 */
+  --primary: #0ABAB5;   /* Tiffany Blue */
+  --primary-d: #079C98; /* 深一档 */
+  --secondary: #81D8D0; /* 浅水蓝 */
+  --light: #EAF8F7;     /* 极浅蓝白 */
+  --ink: #1E3A3D;       /* 墨绿灰，保证可读 */
+  --muted: #5E7B7E;
+  --line: #D9EEEC;
+  --accent: #0ABAB5;
+  --warn: #B8860B;
+  --warn-bg: #FFF6E6;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #ffffff;
+  color: var(--ink);
+}
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  box-shadow: 0 0 24px rgba(10,186,181,.10);
+}
+
+/* 顶栏：蒂芙尼蓝 */
+.topbar {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #fff;
+  padding: 14px 18px;
+}
+.brand { display: flex; align-items: center; gap: 12px; }
+.plane { font-size: 26px; line-height: 1; }
+.logo { font-size: 19px; font-weight: 800; letter-spacing: 1px; }
+.sub { font-size: 12px; opacity: .9; margin-top: 2px; }
+
+/* 旅游路线装饰条 */
+.hero {
+  position: relative;
+  background: #ffffff;
+  border-bottom: 1px solid var(--line);
+  padding: 8px 16px 10px;
+}
+.hero .route { width: 100%; height: 26px; display: block; }
+.hero .route path {
+  fill: none; stroke: var(--primary); stroke-width: 2;
+  stroke-dasharray: 5 5; opacity: .55;
+}
+.hero .route .pin { fill: var(--secondary); }
+.hero .route .pin.start { fill: var(--primary); }
+.hero .route .pin.end { fill: var(--primary-d); }
+.hero-text { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+.chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(10,186,181,.05) 0 14px, transparent 15px),
+    radial-gradient(circle at 88% 60%, rgba(129,216,208,.06) 0 16px, transparent 17px),
+    #ffffff;
+}
+.msg { display: flex; gap: 8px; margin-bottom: 14px; align-items: flex-start; }
+.avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-d)); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; flex: 0 0 auto;
+}
+.msg.user { flex-direction: row-reverse; }
+.msg.user .avatar { background: linear-gradient(135deg, var(--secondary), #5fc4bb); }
+.bubble {
+  max-width: 78%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  background: #fff;
+  border: 1px solid var(--line);
+}
+.msg.user .bubble { background: var(--light); border-color: #c9e8e5; }
+.hint { display: block; margin-top: 6px; font-size: 12px; color: var(--primary-d); }
+
+/* 行程卡片 */
+.plan {
+  max-width: 92%;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.plan-head {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #fff; padding: 12px 14px;
+}
+.plan-head h3 { margin: 0; font-size: 16px; }
+.plan-head .meta { font-size: 12px; opacity: .92; margin-top: 4px; }
+.plan-head .tags span {
+  display: inline-block; background: rgba(255,255,255,.22);
+  border-radius: 10px; padding: 1px 8px; margin: 4px 4px 0 0; font-size: 11px;
+}
+.plan-body { padding: 12px 14px; }
+.sec { margin-bottom: 12px; }
+.sec-title {
+  font-size: 12px; font-weight: 700; color: var(--primary-d);
+  margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+}
+.sec-title::before { content: ""; width: 4px; height: 13px; background: var(--primary); border-radius: 2px; }
+.kv { display: flex; justify-content: space-between; font-size: 13px; padding: 3px 0; border-bottom: 1px dashed var(--line); }
+.kv:last-child { border-bottom: none; }
+.day {
+  border: 1px solid var(--line); border-radius: 10px;
+  padding: 10px 12px; margin-bottom: 8px; background: #f4fbfa;
+}
+.day h4 { margin: 0 0 6px; font-size: 13px; color: var(--primary-d); }
+.spot { font-size: 13px; padding: 2px 0; }
+.spot b { color: var(--ink); }
+.spot .d { color: var(--muted); font-size: 12px; }
+.food { font-size: 13px; color: #0a8c88; padding: 2px 0; }
+.tips { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.tips li { margin-bottom: 2px; }
+
+/* 偏远 / 未开放城市：仅攻略提示 */
+.notice {
+  background: var(--warn-bg); border: 1px solid #f0d6b4;
+  color: var(--warn); border-radius: 10px; padding: 8px 10px;
+  font-size: 12px; line-height: 1.6; margin-bottom: 12px;
+  display: flex; gap: 6px; align-items: flex-start;
+}
+
+.chips { display: flex; gap: 6px; padding: 0 12px 8px; flex-wrap: wrap; }
+.chip {
+  border: 1px solid #bfe6e3; background: var(--light); color: var(--primary-d);
+  border-radius: 14px; padding: 5px 10px; font-size: 12px; cursor: pointer;
+}
+.chip:hover { background: #dcf3f1; }
+
+.inputbar { display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--line); background: #fff; }
+.inputbar input {
+  flex: 1; border: 1px solid var(--line); border-radius: 20px;
+  padding: 10px 14px; font-size: 14px; outline: none;
+}
+.inputbar input:focus { border-color: var(--primary); }
+.inputbar button {
+  border: none; background: linear-gradient(135deg, var(--primary), var(--primary-d)); color: #fff;
+  border-radius: 20px; padding: 0 18px; font-size: 14px; cursor: pointer;
+}
+.inputbar button:hover { filter: brightness(1.05); }
+.loading { font-size: 12px; color: var(--muted); font-style: italic; }
+
+/* 酒店栏 */
+.hotelbar {
+  display: flex; align-items: center; gap: 8px; padding: 8px 12px 0;
+  background: #fff;
+}
+.hotelbar .hotel-ico { font-size: 16px; }
+.hotelbar input {
+  flex: 1; border: 1px dashed var(--primary); border-radius: 16px;
+  padding: 8px 12px; font-size: 13px; outline: none; background: var(--light);
+}
+.hotelbar input:focus { background: #fff; border-style: solid; }
+.hotel-tip { font-size: 11px; color: var(--muted); white-space: nowrap; }
+@media (max-width: 420px) { .hotel-tip { display: none; } }
+
+/* 酒店横幅 */
+.hotel-banner {
+  background: linear-gradient(135deg, var(--light), #fff);
+  border: 1px solid var(--line); border-left: 4px solid var(--primary);
+  border-radius: 10px; padding: 10px 12px; font-size: 13px; color: var(--ink);
+  margin-bottom: 10px; font-weight: 600;
+}
+.hotel-banner .hotel-sub { font-weight: 400; color: var(--muted); font-size: 11px; }
+
+/* 景点交通块 */
+.trans {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px;
+  background: #f6fbfb; border: 1px solid var(--line); border-radius: 8px;
+  padding: 7px 10px; margin: 4px 0 8px 2px; font-size: 12px;
+}
+.trans-route { flex: 1 1 100%; color: var(--primary-d); font-weight: 600; }
+.trans-mode {
+  background: var(--primary); color: #fff; border-radius: 12px;
+  padding: 2px 9px; font-size: 11px;
+}
+.trans-meta { color: var(--ink); font-weight: 600; }
+.trans-note { flex: 1 1 100%; color: var(--muted); font-size: 11px; line-height: 1.4; }
+
+/* 酒店可选项卡片 */
+.hotel-opts { display: flex; flex-direction: column; gap: 8px; }
+.hotel-card {
+  border: 1px solid var(--line); border-radius: 10px;
+  padding: 9px 11px; background: #fff; transition: border-color .15s, box-shadow .15s;
+}
+.hotel-card.sel { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(10,186,181,.15); background: var(--light); }
+.hc-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.hc-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+.hc-price { font-size: 13px; font-weight: 700; color: var(--primary-d); white-space: nowrap; }
+.hc-price span { font-size: 10px; font-weight: 400; color: var(--muted); }
+.hc-area { font-size: 11px; color: var(--muted); margin-top: 3px; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.hc-tag {
+  background: var(--light); border: 1px solid #c9e8e5; color: var(--primary-d);
+  border-radius: 10px; padding: 0 7px; font-size: 10px;
+}
+.hc-detail {
+  margin-top: 7px; padding: 8px 10px; background: var(--light);
+  border-radius: 8px; font-size: 12px; line-height: 1.6; color: var(--ink);
+}
+.hc-why { color: var(--primary-d); font-weight: 600; margin-bottom: 3px; }
+.hc-desc { color: var(--muted); }
+.hc-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.hc-btn {
+  font-size: 11px; border: 1px solid var(--line); background: #fff; color: var(--primary-d);
+  border-radius: 12px; padding: 4px 10px; cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center;
+}
+.hc-btn:hover { border-color: var(--primary); background: var(--light); }
+.hc-btn:disabled { opacity: .55; cursor: default; }
+.hc-btn.pick-btn { background: var(--primary); color: #fff; border-color: var(--primary); }
+.hc-btn.pick-btn:hover { filter: brightness(1.05); background: var(--primary); }
+.hotel-updated { font-size: 11px; color: var(--muted); margin: -4px 0 8px; }
+.hc-ref { font-size: 9px; color: var(--muted); border: 1px solid var(--line); border-radius: 8px; padding: 0 4px; margin-left: 3px; }
+.hc-addr { font-size: 11px; color: var(--ink); margin-top: 3px; }
+.hc-fac { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; align-items: center; }
+.hc-fac > span { background: var(--light); border: 1px solid #c9e8e5; color: var(--primary-d); border-radius: 10px; padding: 0 7px; font-size: 10px; }
+.hc-best { background: #fff5e6 !important; border-color: #f3d9a8 !important; color: #b9802b !important; }
+.hc-info { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+.hotel-card[hidden] { display: none !important; }
+.hc-pros { color: #0a8a6f; margin-top: 4px; }
+.hc-cons { color: #c0392b; margin-top: 2px; }
+.hotel-more-btn {
+  align-self: center; margin: 6px 0 2px; padding: 7px 20px;
+  border: 1px solid var(--primary); background: var(--primary); color: #fff;
+  border-radius: 20px; font-size: 12px; cursor: pointer;
+}
+.hotel-more-btn:hover { filter: brightness(1.06); }

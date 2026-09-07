@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>凑一队 · MVP</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="plane">✈️</span>
+        <div>
+          <div class="logo">凑一队</div>
+          <div class="sub">AI 短途旅行 · 规划 + 凑队，说走就走</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 旅游元素：路线装饰条 -->
+    <div class="hero">
+      <svg viewBox="0 0 360 40" preserveAspectRatio="none" class="route">
+        <path d="M10 30 C 80 5, 140 5, 180 22 S 300 35, 350 12" />
+        <circle cx="10" cy="30" r="4" class="pin start" />
+        <circle cx="180" cy="22" r="4" class="pin mid" />
+        <circle cx="350" cy="12" r="4" class="pin end" />
+      </svg>
+      <span class="hero-text">🧭 想去哪？告诉我，帮你规划专属行程 + 凑一队同频伙伴</span>
+    </div>
+
+    <main id="chat" class="chat">
+      <div class="msg bot">
+        <div class="avatar">凑</div>
+        <div class="bubble">
+          嗨，我是凑凑～告诉我你想去哪、玩几天、预算多少、喜欢什么，<br />
+          我 15 秒内给你一份专属行程；合适的目的地还能帮你凑一队同频伙伴！<br />
+          <span class="hint">试试：杭州，2天，预算800，喜欢小众和美食</span>
+        </div>
+      </div>
+    </main>
+
+    <div class="chips">
+      <button class="chip">杭州，2天，预算800，小众+美食</button>
+      <button class="chip">成都，3天，预算1500，松弛慢游</button>
+      <button class="chip">厦门，2天，预算900，海岛+拍照</button>
+      <button class="chip">漠河，3天，预算1500，极光+小众</button>
+    </div>
+
+    <div class="hotelbar">
+      <span class="hotel-ico">🏨</span>
+      <input id="hotel" type="text" placeholder="选填：酒店地址/名称（留空则用推荐酒店）" autocomplete="off" />
+      <span class="hotel-tip">凑凑会按你的住宿算每段交通</span>
+    </div>
+
+    <footer class="inputbar">
+      <input id="input" type="text" placeholder="例如：西安，3天，预算1200，人文+美食" autocomplete="off" />
+      <button id="send">出发 ✈</button>
+    </footer>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

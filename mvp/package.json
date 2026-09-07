@@ -1,0 +1,13 @@
+{
+  "name": "couyidui-mvp",
+  "version": "0.1.0",
+  "description": "凑一队 MVP —— AI 驱动的短途旅行平台（对话式行程生成）",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "UNLICENSED"
+}
