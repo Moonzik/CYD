@@ -2,7 +2,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const { generatePlan } = require('./engine');
+const { generatePlan, matchGroup } = require('./engine');
 
 const PORT = process.env.PORT || 3000;
 const PUBLIC = path.join(__dirname, 'public');
@@ -28,6 +28,24 @@ const server = http.createServer((req, res) => {
       } catch (e) {
         res.writeHead(400, { 'Content-Type': MIME['.json'] });
         res.end(JSON.stringify({ ok: false, message: '输入解析失败：' + e.message }));
+      }
+    });
+    return;
+  }
+
+  // API：匹配组队引擎（阶段 2）
+  if (req.method === 'POST' && req.url === '/api/match') {
+    let body = '';
+    req.on('data', (c) => (body += c));
+    req.on('end', () => {
+      try {
+        const { city, profile, hotel, salt } = JSON.parse(body || '{}');
+        const result = matchGroup(city || '', profile || {}, { hotel, salt });
+        res.writeHead(200, { 'Content-Type': MIME['.json'] });
+        res.end(JSON.stringify(result));
+      } catch (e) {
+        res.writeHead(400, { 'Content-Type': MIME['.json'] });
+        res.end(JSON.stringify({ ok: false, message: '匹配失败：' + e.message }));
       }
     });
     return;

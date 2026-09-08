@@ -427,4 +427,110 @@ function generateGenericPlan(city, days, budget, tags, text, opts) {
   };
 }
 
-module.exports = { generatePlan, CITIES, TAG_LABEL };
+// ===== 阶段 2：匹配组队引擎 =====
+const NICK_A = ['小','阿','老','大','酷','懒','甜','冷','清','风','柚','糖','茶','夜','星','七','川','鹿','洱','桃'];
+const NICK_B = ['满','野','桃','柚','乐','七','川','南','宁','九','橙','鹿','屿','宝','辰','柔','一','安','桥','星'];
+const CAND_FROM = ['上海','北京','广州','深圳','杭州','成都','南京','武汉','西安','长沙','苏州','重庆','天津','青岛','厦门','合肥','郑州','济南','南昌','福州'];
+const SPEND_LEVELS = ['economy','normal','quality'];
+const SPEND_LABEL = { economy:'经济', normal:'适中', quality:'品质' };
+const PERSONA = [
+  '爱拍照不爱动脑，跟着走就行','地道吃货，负责找馆子','规划控，行程交给我','佛系随缘，主打一个松弛','话痨一枚，路上不冷场','户外爱好者，爬山第一名','夜猫子，晚上最精神','文艺青年，爱逛展逛书店','社恐但友好，慢慢熟','省钱达人，攻略小能手'
+];
+const EMOJI_POOL = ['🦊','🐱','🐰','🐻','🐼','🦁','🐯','🐨','🦄','🐧','🐬','🌟','🍊','🌿','🍡'];
+const SAME_PROV = {
+  '北京':'北京','上海':'上海','天津':'天津','重庆':'重庆',
+  '杭州':'浙江','宁波':'浙江','温州':'浙江','南京':'江苏','苏州':'江苏','无锡':'江苏','广州':'广东','深圳':'广东','珠海':'广东','厦门':'福建','福州':'福建','泉州':'福建','武汉':'湖北','成都':'四川','西安':'陕西','长沙':'湖南','南昌':'江西','合肥':'安徽','郑州':'河南','济南':'山东','青岛':'山东'
+};
+function randNick(rng){
+  const a = NICK_A[Math.floor(rng()*NICK_A.length)];
+  const b = NICK_B[Math.floor(rng()*NICK_B.length)];
+  return a + b + (rng()<0.3 ? Math.floor(rng()*90+10) : '');
+}
+function buildCandidate(rng, meTags, meFrom, meSpend){
+  const age = 18 + Math.floor(rng()*13);
+  // 出发地：约 45% 概率落在同省/同市，强化「同频小团」的地缘亲近感
+  let fromCity;
+  const prov = meFrom ? (SAME_PROV[meFrom] || meFrom) : '';
+  const sameProv = prov ? CAND_FROM.filter(c => (SAME_PROV[c] || c) === prov) : [];
+  if (sameProv.length && rng() < 0.45){
+    fromCity = sameProv[Math.floor(rng()*sameProv.length)];
+  } else {
+    fromCity = CAND_FROM[Math.floor(rng()*CAND_FROM.length)];
+  }
+  const allTags = Object.keys(TAG_LABEL);
+  const meT = meTags || [];
+  const overlapN = Math.min(meT.length, 1 + Math.floor(rng()*2)); // 1-2 个与用户同频的标签
+  const tags = [];
+  for (let i=0;i<overlapN;i++) tags.push(meT[i % meT.length]);
+  const others = allTags.filter(t=>!tags.includes(t));
+  const want = 2 + Math.floor(rng()*3);
+  while (tags.length < want && others.length){
+    tags.push(others.splice(Math.floor(rng()*others.length),1)[0]);
+  }
+  // 消费档位：约 50% 概率与用户同档，强化消费观念的共性
+  const spend = (meSpend && rng() < 0.5) ? meSpend : SPEND_LEVELS[Math.floor(rng()*SPEND_LEVELS.length)];
+  const persona = PERSONA[Math.floor(rng()*PERSONA.length)];
+  const emoji = EMOJI_POOL[Math.floor(rng()*EMOJI_POOL.length)];
+  return { nick: randNick(rng), emoji, age, fromCity, tags, spend, persona };
+}
+function sameRegion(a,b){ return (SAME_PROV[a]||a) === (SAME_PROV[b]||b); }
+function matchScore(me, cand){
+  const inter = me.tags.filter(t=>cand.tags.includes(t));
+  const union = new Set([...me.tags, ...cand.tags]).size || 1;
+  const interest = inter.length/union;
+  const ageDiff = Math.abs((me.age||24)-(cand.age||24));
+  const ageScore = Math.max(0, 15-ageDiff)/15;
+  let locScore = 0;
+  if (me.fromCity && cand.fromCity){
+    if (me.fromCity===cand.fromCity) locScore = 1;
+    else if (sameRegion(me.fromCity, cand.fromCity)) locScore = 0.6;
+  }
+  const spendScore = (me.spend && me.spend===cand.spend)?1:0;
+  const score = Math.round(interest*50 + ageScore*20 + locScore*20 + spendScore*10);
+  const common = [];
+  if (inter.length) common.push(`都喜欢「${inter.slice(0,2).map(t=>TAG_LABEL[t]||t).join('、')}」`);
+  if (ageDiff<=3) common.push('年龄相仿');
+  if (me.fromCity && me.fromCity===cand.fromCity) common.push(`同从${cand.fromCity}出发`);
+  else if (me.fromCity && sameRegion(me.fromCity, cand.fromCity)) common.push(`同属${SAME_PROV[me.fromCity]||me.fromCity}片区`);
+  if (me.spend && me.spend===cand.spend) common.push(`消费观念接近（${SPEND_LABEL[cand.spend]}）`);
+  return { score: Math.max(42, Math.min(99, score)), common };
+}
+function matchGroup(city, profile, opts){
+  profile = profile || {};
+  const me = {
+    age: profile.age ? Number(profile.age) : 24,
+    fromCity: (profile.fromCity||'').trim(),
+    tags: Array.isArray(profile.tags) && profile.tags.length ? profile.tags : ['niche','food','photo'],
+    spend: profile.spend || 'normal',
+  };
+  const salt = (opts && opts.salt) ? String(opts.salt) : '';
+  const poolSeed = hashStr(city + Math.floor(Date.now()/600000) + salt);
+  const rng = mulberry32(poolSeed);
+  const poolSize = 16 + Math.floor(rng()*9); // 16-24 在线候选
+  const candidates = [];
+  for (let i=0;i<poolSize;i++) candidates.push(buildCandidate(rng, me.tags, me.fromCity, me.spend));
+  const scored = candidates.map(c=>{ const m=matchScore(me,c); return Object.assign({}, c, { score:m.score, common:m.common }); })
+    .sort((a,b)=>b.score-a.score);
+  const want = Math.min(7, Math.max(3, 4 + Math.floor(rng()*4))); // 3-7 名伙伴
+  const members = scored.slice(0, want).map((c,i)=>({
+    id:`m${i}`, nick:c.nick, emoji:c.emoji, age:c.age, fromCity:c.fromCity,
+    tags:c.tags, spend:c.spend, persona:c.persona, score:c.score, common:c.common,
+  }));
+  const groupSize = members.length + 1;
+  const topTags = [...new Set(members.flatMap(m=>m.tags))].slice(0,4);
+  const meetPoint = (opts && opts.hotel) ? `在您入住的「${opts.hotel}」附近集合` : `建议从${me.fromCity||city}出发，到${city}后于地铁站集合`;
+  const firstTag = TAG_LABEL[me.tags[0]] || '';
+  return {
+    ok: true,
+    city,
+    groupName: `凑一队·${city}${firstTag}小队`,
+    members,
+    groupSize,
+    meetPoint,
+    topTags,
+    poolSize,
+    note: '以上为基于你的画像模拟匹配的「同频候选」，真实上线后将替换为实时在线用户池。',
+  };
+}
+
+module.exports = { generatePlan, matchGroup, CITIES, TAG_LABEL };
