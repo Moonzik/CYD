@@ -305,7 +305,7 @@ body {
 .modal-mask{ position:fixed; inset:0; background:rgba(20,40,42,.45); display:flex; align-items:center; justify-content:center; z-index:50; padding:16px; }
 .modal{ width:100%; max-width:360px; background:#fff; border-radius:16px; padding:18px 16px 20px; position:relative; box-shadow:0 12px 40px rgba(10,186,181,.25); max-height:86vh; overflow:auto; }
 .modal-close{ position:absolute; top:8px; right:12px; border:none; background:none; font-size:22px; color:var(--muted); cursor:pointer; line-height:1; }
-.profile-modal .pf-head{ display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+.pf-head{ display:flex; align-items:center; gap:10px; margin-bottom:12px; }
 .pf-avatar{ width:48px; height:48px; border-radius:50%; background:var(--light); display:flex; align-items:center; justify-content:center; font-size:26px; flex:0 0 auto; }
 .pf-nick{ flex:1; border:1px solid var(--line); border-radius:12px; padding:8px 10px; font-size:15px; outline:none; }
 .pf-nick:focus{ border-color:var(--primary); }
@@ -331,6 +331,30 @@ body {
 .vf-msg.err{ color:#c0392b; }
 .vf-submit{ width:100%; border:none; border-radius:18px; padding:10px; background:linear-gradient(135deg,var(--primary),var(--primary-d)); color:#fff; font-size:14px; cursor:pointer; }
 .vf-submit:hover{ filter:brightness(1.05); }
+.vf-submit:disabled{ opacity:.5; cursor:not-allowed; filter:none; }
+.vf-field{ margin:4px 0 8px; }
+.vf-field label{ font-size:12px; color:var(--muted); display:block; margin-bottom:4px; }
+.vf-cam{ border:1px solid var(--line); border-radius:14px; padding:10px; margin-bottom:8px; background:var(--light); }
+.vf-cam-stage{ position:relative; width:100%; aspect-ratio:4/3; background:#0c1b22; border-radius:10px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+.vf-video, .vf-prev{ width:100%; height:100%; object-fit:cover; display:block; }
+.vf-cam-hint{ color:#cfeae7; font-size:13px; text-align:center; padding:0 10px; }
+.vf-cam-btns{ display:flex; gap:8px; margin-top:8px; }
+.vf-sub{ flex:1; border:1px solid var(--primary); background:#fff; color:var(--primary-d); border-radius:16px; padding:9px; font-size:14px; cursor:pointer; }
+.vf-sub:disabled{ opacity:.5; cursor:not-allowed; }
+.vf-sub:hover:not(:disabled){ background:var(--light); }
+.vf-file{ display:inline-block; font-size:13px; color:var(--primary-d); background:var(--light); border:1px dashed var(--primary); border-radius:12px; padding:7px 12px; cursor:pointer; margin:2px 0 8px; }
+.pub-prev{ margin-bottom:8px; }
+.pub-thumb{ width:100%; max-height:160px; border-radius:12px; object-fit:cover; display:block; }
+.post-media{ width:100%; max-height:240px; border-radius:12px; object-fit:cover; margin:6px 0; display:block; background:#000; }
+.pf-status{ font-size:11px; padding:2px 8px; border-radius:10px; margin-left:6px; }
+.pf-status.pending{ background:#fff6e0; color:#b8860b; border:1px solid #f0d490; }
+.pf-status.ok{ background:#e9f7f3; color:#0a8a6f; border:1px solid #b9e3dd; }
+.sq-post.pending, .gd-post.pending{ opacity:.62; }
+.fab{ position:fixed; right:18px; bottom:74px; width:52px; height:52px; border-radius:50%; border:none; background:linear-gradient(135deg,var(--primary),var(--primary-d)); color:#fff; font-size:26px; line-height:1; cursor:pointer; box-shadow:0 8px 22px rgba(10,186,181,.4); z-index:40; }
+.fab:active{ transform:scale(.94); }
+.cyd-toast{ position:fixed; left:50%; bottom:96px; transform:translateX(-50%) translateY(20px); background:rgba(20,40,42,.9); color:#fff; font-size:13px; padding:9px 16px; border-radius:20px; z-index:60; opacity:0; pointer-events:none; transition:.25s; max-width:80vw; text-align:center; }
+.cyd-toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+.chat-x{ font-size:20px; }
 
 /* ===== 广场 ===== */
 .square-btn{ width:38px; height:38px; border-radius:50%; border:1px solid var(--line); background:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex:0 0 auto; margin-right:6px; }
@@ -340,6 +364,11 @@ body {
 .sq-sub{ font-size:12px; color:var(--muted); line-height:1.5; margin:4px 0 10px; }
 .sq-publish{ width:100%; border:none; border-radius:16px; padding:9px; background:linear-gradient(135deg,var(--primary),var(--primary-d)); color:#fff; font-size:13px; cursor:pointer; margin-bottom:10px; }
 .sq-publish:hover{ filter:brightness(1.05); }
+/* 实名认证必填提示条 */
+.verify-gate{ display:flex; align-items:center; justify-content:space-between; gap:10px; background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; border-radius:14px; padding:9px 12px; font-size:12.5px; line-height:1.45; margin-bottom:10px; }
+.verify-gate b{ color:#c2410c; }
+.vg-btn{ flex:none; border:none; border-radius:12px; padding:6px 12px; background:#c2410c; color:#fff; font-size:12.5px; font-weight:700; cursor:pointer; }
+.vg-btn:hover{ filter:brightness(1.06); }
 .sq-list{ display:flex; flex-direction:column; gap:10px; }
 .sq-post{ border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:#fff; }
 .sq-head{ display:flex; align-items:center; gap:8px; }
@@ -416,3 +445,45 @@ body {
 .login-step{ font-size:13px; color:var(--ink); line-height:1.7; }
 .login-step .vf-input{ margin:6px 0; }
 .login-info{ font-size:13px; color:var(--ink); line-height:1.8; margin:8px 0 12px; }
+
+/* ===== 已互通队友（组队双方同意后展示真实信息） ===== */
+.pf-conns{ display:flex; flex-direction:column; gap:8px; }
+.pf-conn{ display:flex; align-items:center; gap:10px; background:var(--light); border:1px solid var(--line); border-radius:12px; padding:9px 12px; cursor:pointer; transition:border-color .15s; }
+.pf-conn:hover{ border-color:var(--primary); }
+.pf-conn-emoji{ font-size:26px; line-height:1; }
+.pf-conn-main{ flex:1; min-width:0; }
+.pf-conn-name{ font-weight:600; font-size:14px; color:var(--ink); }
+.pf-conn-real{ color:var(--primary-d); font-size:13px; margin-left:4px; }
+.pf-verified{ font-size:10px; background:var(--primary); color:#fff; border-radius:8px; padding:1px 6px; margin-left:5px; vertical-align:middle; }
+.pf-conn-meta{ font-size:11px; color:var(--muted); margin-top:2px; }
+.pf-conn-arrow{ color:var(--primary); font-size:20px; }
+.pf-partner .pf-avatar.big{ font-size:46px; width:74px; height:74px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--light); }
+.pf-nick2{ font-size:20px; font-weight:700; margin-top:6px; color:var(--ink); }
+.pf-conn-badge{ font-size:12px; color:var(--primary-d); margin-top:4px; }
+
+/* ===== 底部 Tab 栏：四个板块 ===== */
+.tabbar{ display:flex; border-top:1px solid var(--line); background:#fff; flex:0 0 auto; }
+.tabbar-btn{ flex:1; border:0; background:#fff; padding:7px 0 8px; display:flex; flex-direction:column; align-items:center; gap:2px; cursor:pointer; color:var(--muted); font-size:11px; text-decoration:none; }
+.tabbar-btn:visited{ color:var(--muted); }
+.tabbar-btn .tb-ico{ font-size:20px; line-height:1; }
+.tabbar-btn.active{ color:var(--primary); }
+.tabbar-btn.active .tb-ico{ transform:translateY(-1px); }
+/* 好地儿分享 */
+.gd-post{ border:1px solid var(--line); border-radius:12px; padding:11px 12px; margin-bottom:10px; background:#fff; }
+.gd-head{ display:flex; align-items:center; gap:9px; }
+.gd-avatar{ font-size:22px; }
+.gd-author{ font-weight:600; font-size:14px; }
+.gd-meta{ font-size:11px; color:var(--muted); }
+.gd-place{ font-size:15px; font-weight:700; color:var(--ink); margin:7px 0 3px; }
+.gd-text{ font-size:13px; color:var(--ink); line-height:1.6; }
+.gd-tags{ margin:6px 0; }
+.gd-tag{ display:inline-block; background:var(--light); color:var(--primary-d); border-radius:8px; padding:1px 8px; font-size:11px; margin:0 5px 4px 0; }
+.gd-actions{ display:flex; gap:8px; }
+.gd-chat, .gd-want{ flex:1; border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:10px; padding:7px; font-size:13px; cursor:pointer; }
+.gd-chat{ border-color:var(--primary); color:var(--primary-d); }
+
+/* ===== 各板块独立页面（底部 Tab 真实跳转，非悬浮窗） ===== */
+#square-body, #good-body, #me-body{ flex:1; min-height:0; overflow-y:auto; padding:14px 16px 30px; }
+/* 个人主页内联视图：复用 .pf-* 样式，去掉 modal 外框 */
+#me-body .pf-head{ padding-top:2px; }
+.profile-view .pf-section:first-of-type{ margin-top:6px; }

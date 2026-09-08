@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>凑一队 · MVP</title>
+  <title>凑一队 · 凑凑</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body data-page="plan">
   <div class="app">
     <header class="topbar">
       <div class="brand">
@@ -17,11 +17,8 @@
         </div>
       </div>
       <button class="login-btn" id="login-btn" title="登录" type="button">登录</button>
-      <button class="square-btn" id="square-btn" title="广场" type="button">📣</button>
-      <button class="profile-btn" id="profile-btn" title="我的主页" type="button">🌱</button>
     </header>
 
-    <!-- 旅游元素：路线装饰条 -->
     <div class="hero">
       <svg viewBox="0 0 360 40" preserveAspectRatio="none" class="route">
         <path d="M10 30 C 80 5, 140 5, 180 22 S 300 35, 350 12" />
@@ -60,6 +57,13 @@
       <input id="input" type="text" placeholder="例如：西安，3天，预算1200，人文+美食" autocomplete="off" />
       <button id="send">出发 ✈</button>
     </footer>
+
+    <nav class="tabbar">
+      <a class="tabbar-btn active" href="index.html"><span class="tb-ico">🧭</span><span class="tb-tx">凑凑</span></a>
+      <a class="tabbar-btn" href="square.html"><span class="tb-ico">📣</span><span class="tb-tx">广场</span></a>
+      <a class="tabbar-btn" href="good.html"><span class="tb-ico">📍</span><span class="tb-tx">有个好地方</span></a>
+      <a class="tabbar-btn" href="me.html"><span class="tb-ico">🌱</span><span class="tb-tx">我的</span></a>
+    </nav>
   </div>
   <script src="app.js"></script>
 </body>
